@@ -1,6 +1,7 @@
 {
     "name": "ipresence/monitoring",
     "type": "library",
+    "license": "MIT",
     "require-dev": {
         "phpspec/phpspec": "^5.1",
         "pluggit/monitoring": "^2.3",
