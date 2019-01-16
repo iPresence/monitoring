@@ -24,7 +24,7 @@ class MonitoringExtension extends Extension
             $class = $this->definePluggitMonitor( $container, $config);
         }
 
-        $container->setAlias($class, Monitor::class);
+        $container->setAlias(Monitor::class, $class);
     }
 
     /**
