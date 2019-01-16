@@ -2,12 +2,15 @@
 
 namespace IPresence\Monitoring\Symfony\DependencyInjection;
 
+use Cmp\Monitoring\MonitorFactory;
+use Cmp\Monitoring\Monitor as CmpMonitor;
 use IPresence\Monitoring\Adapter\NullMonitor;
 use IPresence\Monitoring\Adapter\PluggitMonitor;
 use IPresence\Monitoring\Monitor;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\Extension;
+use Symfony\Component\DependencyInjection\Reference;
 
 class MonitoringExtension extends Extension
 {
@@ -35,11 +38,11 @@ class MonitoringExtension extends Extension
      */
     private function definePluggitMonitor(ContainerBuilder $container, array $config): string
     {
-        $container->setDefinition( PluggitMonitor::class, (new Definition())
-            ->setFactory('Cmp\Monitoring\MonitorFactory::create')
+        $container->setDefinition( CmpMonitor::class, (new Definition())
+            ->setFactory([MonitorFactory::class, 'create'])
             ->addArgument([
                 'hostname' => $config['hostname'] ?? null,
-                'default_tags' => $config['default_tags'] ?? [] ,
+                'default_tags' => $config['default_tags'] ?? [],
                 'prefix' => $config['prefix'] ?? '',
                 'datadog' => [
                     'metrics' => $config['provider']['pluggit']['metrics'] ?? true,
@@ -50,7 +53,7 @@ class MonitoringExtension extends Extension
             ]));
 
         $container->setDefinition(PluggitMonitor::class, (new Definition())
-            ->addArgument(PluggitMonitor::class));
+            ->addArgument(new Reference(CmpMonitor::class)));
 
         return PluggitMonitor::class;
     }
