@@ -1,4 +1,6 @@
 # Monitoring
+[![Build Status](https://travis-ci.org/iPresence/monitoring.svg?branch=master)](https://travis-ci.org/iPresence/monitoring)
+
 This project defines a common interface to be able to monitor you application. It has an adapter ready to be used, but feel free to use or add any adapter you need.
 
 ## How to use it with Symfony
