@@ -1,0 +1,22 @@
+{
+    "name": "ipresence/monitoring",
+    "type": "library",
+    "require-dev": {
+        "phpspec/phpspec": "^5.1",
+        "pluggit/monitoring": "^2.3",
+        "symfony/dependency-injection": "^4.2",
+        "symfony/config": "^4.2",
+        "symfony/http-kernel": "^4.2"
+    },
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "IPresence\\Monitoring\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "behat\\IPresence\\Monitoring\\": "./tests/behat/bootstrap"
+        }
+    }
+}

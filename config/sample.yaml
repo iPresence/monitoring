@@ -1,0 +1,11 @@
+hostname: fooserver
+prefix: foo_prefix.
+default_tags:
+  foo: bar
+
+provider:
+  pluggit:
+    metrics: true
+    events: true
+    host: localhost
+    port: 8822

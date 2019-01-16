@@ -1,0 +1,7 @@
+version: '3'
+
+services:
+  phpfarm:
+    build: phpfarm
+    volumes:
+      - ../../:/app/monitoring
