@@ -5,7 +5,7 @@ namespace IPresence\Monitoring\Adapter;
 use Cmp\Monitoring\Monitor as Client;
 use IPresence\Monitoring\Monitor;
 
-class PluggitMonitorAdapter implements Monitor
+class PluggitMonitor implements Monitor
 {
     /**
      * @var Client

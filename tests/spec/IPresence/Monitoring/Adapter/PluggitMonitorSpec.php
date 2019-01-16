@@ -3,14 +3,14 @@
 namespace spec\IPresence\Monitoring\Adapter;
 
 use Cmp\Monitoring\Monitor as Client;
-use IPresence\Monitoring\Adapter\PluggitMonitorAdapter;
+use IPresence\Monitoring\Adapter\PluggitMonitor;
 use IPresence\Monitoring\Monitor;
 use PhpSpec\ObjectBehavior;
 
 /**
- * @mixin PluggitMonitorAdapter
+ * @mixin PluggitMonitor
  */
-class PluggitMonitorAdapterSpec extends ObjectBehavior
+class PluggitMonitorSpec extends ObjectBehavior
 {
     public function let(Client $client)
     {

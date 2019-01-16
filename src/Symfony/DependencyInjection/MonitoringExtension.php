@@ -2,8 +2,8 @@
 
 namespace IPresence\Monitoring\Symfony\DependencyInjection;
 
-use Cmp\Monitoring\Monitor as PluggitMonitor;
-use IPresence\Monitoring\Adapter\PluggitMonitorAdapter;
+use IPresence\Monitoring\Adapter\NullMonitor;
+use IPresence\Monitoring\Adapter\PluggitMonitor;
 use IPresence\Monitoring\Monitor;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -19,18 +19,23 @@ class MonitoringExtension extends Extension
     {
         $config = $this->processConfiguration(new MonitoringConfiguration(), $configs);
 
-        $container->setDefinition( PluggitMonitor::class, $this->pluggitClientDefinition($config));
-        $container->setDefinition(Monitor::class, $this->pluggitAdapterDefinition());
+        $class = NullMonitor::class;
+        if (isset($config['provider']['pluggit'])) {
+            $class = $this->definePluggitMonitor( $container, $config);
+        }
+
+        $container->setAlias($class, Monitor::class);
     }
 
     /**
-     * @param array $config
+     * @param ContainerBuilder $container
+     * @param array            $config
      *
-     * @return Definition
+     * @return string
      */
-    private function pluggitClientDefinition(array $config): Definition
+    private function definePluggitMonitor(ContainerBuilder $container, array $config): string
     {
-        return (new Definition())
+        $container->setDefinition( PluggitMonitor::class, (new Definition())
             ->setFactory('Cmp\Monitoring\MonitorFactory::create')
             ->addArgument([
                 'hostname' => $config['hostname'] ?? null,
@@ -42,16 +47,11 @@ class MonitoringExtension extends Extension
                     'host'    => $config['provider']['pluggit']['host'] ?? null,
                     'port'    => $config['provider']['pluggit']['port'] ?? null,
                 ],
-            ]);
-    }
+            ]));
 
-    /**
-     * @return Definition
-     */
-    private function pluggitAdapterDefinition(): Definition
-    {
-        return (new Definition())
-            ->setClass(PluggitMonitorAdapter::class)
-            ->addArgument(PluggitMonitor::class);
+        $container->setDefinition(PluggitMonitor::class, (new Definition())
+            ->addArgument(PluggitMonitor::class));
+
+        return PluggitMonitor::class;
     }
 }
